@@ -11,12 +11,11 @@
 <body>
     <div class="container mt-4">
         <h2 class="mb-4">Master Tipe Buku</h2>
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
             </div>
         @endif
-
         <a href="{{ route('book-types.create') }}" class="btn btn-primary mb-3">+ Tambah Tipe Buku</a>
 
         <table class="table table-bordered">
