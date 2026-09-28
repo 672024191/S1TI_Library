@@ -12,8 +12,9 @@ class BookTypeController extends Controller
      */
     public function index()
     {
-        $bookTypes = BookType::all();
-        return response()->json($bookTypes);
+        $bookTypes = BookType::get();
+
+        return view('book-types.index', compact('bookTypes'));
     }
 
     /**
@@ -21,7 +22,7 @@ class BookTypeController extends Controller
      */
     public function create()
     {
-        //
+        return view('book-types.form');
     }
 
     /**
@@ -29,25 +30,23 @@ class BookTypeController extends Controller
      */
     public function store(Request $request)
     {
+        //validation
         $validated = $request->validate([
-            'name' => 'required|string|unique:book_types,name|max:255',
-            'description' => 'nullable|string',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
         ]);
 
-        $bookType = BookType::create($validated);
+        BookType::create($validated);
 
-        return response()->json([
-            'message' => 'BookType created successfully',
-            'data' => $bookType,
-        ], 201);
+        return redirect()->route('book-types.index')->with('success', 'Tipe Buku berhasil ditambahkan.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(BookType $bookType)
+    public function show(string $id)
     {
-        return response()->json($bookType);
+        //
     }
 
     /**
@@ -55,7 +54,7 @@ class BookTypeController extends Controller
      */
     public function edit(BookType $bookType)
     {
-        //
+        return view('book-types.form', compact('bookType'));
     }
 
     /**
@@ -64,16 +63,12 @@ class BookTypeController extends Controller
     public function update(Request $request, BookType $bookType)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:book_types,name,' . $bookType->id,
-            'description' => 'nullable|string',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
         ]);
 
         $bookType->update($validated);
-
-        return response()->json([
-            'message' => 'BookType updated successfully',
-            'data' => $bookType,
-        ]);
+        return redirect()->route('book-types.index')->with('success', 'Tipe Buku berhasil diupdate.');
     }
 
     /**
@@ -82,9 +77,6 @@ class BookTypeController extends Controller
     public function destroy(BookType $bookType)
     {
         $bookType->delete();
-
-        return response()->json([
-            'message' => 'BookType deleted successfully',
-        ]);
+        return redirect()->route('book-types.index')->with('success', 'Tipe Buku berhasil dihapus.');
     }
 }
