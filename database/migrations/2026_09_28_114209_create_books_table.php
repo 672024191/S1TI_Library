@@ -6,24 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
-{
-    Schema::create('books', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('book_type_id')->constrained()->onDelete('cascade');
-        $table->string('title');
-        $table->text('synopsis')->nullable();
-        $table->string('image')->nullable(); // <-- Pastikan baris ini ada
-        $table->timestamps();
-    });
-}
+    {
+        Schema::create('books', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('book_type_id')->constrained()->onDelete('cascade');
+            $table->string('title');
+            $table->string('author');
+            $table->string('publisher');
+            $table->integer('year');
+            $table->timestamps();
+        });
+    }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('books');

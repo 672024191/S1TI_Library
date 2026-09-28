@@ -1,38 +1,26 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Tipe Buku</title>
+    <title>{{ $bookType->exists ? 'Edit Tipe Buku' : 'Tambah Tipe Buku' }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body>
     <div class="container mt-4">
-        <h2 class="mb-4">{{ isset($bookType) ? 'Edit Tipe Buku' : 'Tambah Tipe Buku' }}</h2>
-        <form method="POST" action="{{ isset($bookType) ? route('book-types.update', $bookType) : route('book-types.store') }}">
+        <h2 class="mb-4">{{ $bookType->exists ? 'Edit Tipe Buku' : 'Tambah Tipe Buku' }}</h2>
+
+        <form method="POST" action="{{ $bookType->exists ? route('book-types.update', $bookType) : route('book-types.store') }}">
             @csrf
-            @if(isset($bookType))
-            @method('PUT')
+            @if($bookType->exists)
+                @method('PUT')
             @endif
 
             <div class="mb-3">
                 <label for="name" class="form-label">Nama Tipe Buku</label>
-                <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
-                    value="{{ old('name', $bookType->name ?? '') }}">
+                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $bookType->name) }}" required>
                 @error('name')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label for="description" class="form-label">Deskripsi Tipe Buku</label>
-                <input type="text" name="description" id="description"
-                    class="form-control @error('description') is-invalid @enderror"
-                    value="{{ old('description', $bookType->description ?? '') }}">
-                @error('description')
-                <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -41,5 +29,4 @@
         </form>
     </div>
 </body>
-
 </html>
